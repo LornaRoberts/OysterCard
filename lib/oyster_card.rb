@@ -10,4 +10,20 @@ class OysterCard
     fail "Error, Maximum card limit of £#{@limit}" if @balance + amount > LIMIT
     @balance += amount
   end
+
+  def deduct(amount)
+    @balance -= amount
+  end
+
+  def in_journey?
+     @state
+  end
+
+  def touch_in
+    @state = true
+  end
+
+  def touch_out
+    @state = false
+  end
 end
