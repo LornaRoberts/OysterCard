@@ -38,13 +38,16 @@ describe OysterCard do
       expect(subject.entry_station).to eq ("Barnes")
 end
   end
-#describe "#touch_out" do
-#    let (:exit_station) {double :station}
-#    it "remembers the exit station" do
-#    subject.top_up(30)
-#    subject.touch_in("Kings_Cross")
-#      expect(subject.touch_out("Barnes")).to eq("Barnes")
-  #  end
+describe "#touch_out" do
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
+
+  it "stores exit station" do
+    subject.top_up(10)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.exit_station).to eq exit_station
+  end
     it "switches the state of use to not in_journey?"do
       subject.touch_out("Covent_Garden")
       expect(subject.in_journey?).to eq(false)
@@ -53,4 +56,18 @@ end
       subject.top_up(30)
       expect { subject.touch_out("Kings_Cross")}.to change{subject.balance}.by(-OysterCard::MIN)
     end
+  it "stores journey" do
+    subject.top_up(10)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.journeys).to have_value(exit_station)
   end
+  let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
+  it "stores one journey" do
+    subject.top_up(10)
+    subject.touch_in(entry_station)
+    subject.touch_out(exit_station)
+    expect(subject.journeys).to eq journey
+  end
+  end
+end

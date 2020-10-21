@@ -1,8 +1,9 @@
 class OysterCard
-  attr_reader :balance, :limit, :check, :entry_station
+  attr_reader :balance, :limit, :check, :entry_station, :exit_station, :journeys
   LIMIT = 90
   MIN = 1
   def initialize
+    @journeys = Hash.new
     @balance = 0
     @limit = LIMIT
   end
@@ -23,6 +24,7 @@ class OysterCard
 
   def touch_out(exit_station)
     @exit_station = exit_station
+    @journeys = {entry_station:@entry_station, exit_station:@exit_station}
     deduct(MIN)
     @entry_station = nil
   end
